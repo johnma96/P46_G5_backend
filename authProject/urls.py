@@ -16,9 +16,9 @@ Including another URLconf
 
 from django.contrib                 import admin
 from django.urls                    import path
-from authApp                        import views  as authAppViews
+#from authApp                        import views  as authAppViews
 
 urlpatterns = [
     path('admin/',                    admin.site.urls),  # use defaul Djando Admin
-    path('pruebas/create/',           authAppViews.PruebasCreateView.as_view()), # create a new test
+#    path('pruebas/create/',           authAppViews.PruebasCreateView.as_view()), # create a new test
 ]

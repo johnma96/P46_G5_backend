@@ -74,7 +74,7 @@ REST_FRAMEWORK = {
 }
 
 
-#AUTH_USER_MODEL = 'authApp.User'
+AUTH_USER_MODEL = 'authApp.Dep_ips'
 
 
 ROOT_URLCONF = 'authProject.urls'

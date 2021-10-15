@@ -9,7 +9,7 @@ from authApp.serializers.pruebasSerializer      import PruebasSerializer
 from rest_framework                             import serializers
 
 class Dep_ipsSerializer(serializers.ModelSerializer):
-    pruebas = PruebasSerializer()
+    prueba = PruebasSerializer()
     class Meta:
         model  = Dep_ips
         fields = ['id', 'ips', 'departamento', 'name', 'username', 'password', 'prueba', 'ips', 'departamento']
@@ -17,14 +17,14 @@ class Dep_ipsSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         pruebaData = validated_data.pop('prueba')
         userInstance = Dep_ips.objects.create(**validated_data)
-        Pruebas.objects.create(user=userInstance, **pruebaData)
+        Pruebas.objects.create(dep_ips=userInstance, **pruebaData)
         return userInstance
 
     def to_representation(self, obj):
         user = Dep_ips.objects.get(id=obj.id)
-        prueba = Pruebas.objects.get(user=obj.id)
-        #prueba = Pruebas.objects.get(dep_ips=obj.id)
+        prueba = Pruebas.objects.get(dep_ips=obj.id)
         #ips = Ips.objects.get(id=obj.id)
+        #ips = Ips.objects.get(id=obj.id_ips)
         #departamento = Departamento.objects.get(id=obj.id_dep)
 
         return {

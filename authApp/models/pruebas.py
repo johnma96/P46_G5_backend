@@ -1,6 +1,5 @@
 from django.db      import models
 from .dep_ips       import Dep_ips
-#from backend.authApp.models import dep_ips
 
 class Pruebas(models.Model):
     id                  = models.AutoField(primary_key=True)

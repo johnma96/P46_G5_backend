@@ -1,12 +1,12 @@
 from django.conf                                  import settings
-from rest_framework                               import views, status
+from rest_framework                               import generics, status
 from rest_framework.response                      import Response
 from rest_framework.permissions                   import IsAuthenticated
 from rest_framework_simplejwt.backends            import TokenBackend
 
 from authApp.serializers.departamentoSerializer import DepartamentoSerializer
 
-class DepartamentoCreateView(views.APIView):
+class DepartamentoCreateView(generics.RetrieveAPIView):
     serializer_class   = DepartamentoSerializer
     permission_classes = (IsAuthenticated,)
 

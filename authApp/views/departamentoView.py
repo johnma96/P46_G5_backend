@@ -7,8 +7,8 @@ from rest_framework.permissions                   import IsAuthenticated
 from authApp.serializers.departamentoSerializer import DepartamentoSerializer
 
 class DepartamentoCreateView(views.APIView):
-    serializer_class   = DepartamentoSerializer
-    permission_classes = (IsAuthenticated,)
+    # serializer_class   = DepartamentoSerializer
+    # permission_classes = (IsAuthenticated,)
 
     def post(self, request, *args, **kwargs):
         serializer = DepartamentoSerializer(data=request.data)

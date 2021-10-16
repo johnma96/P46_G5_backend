@@ -24,7 +24,7 @@ class Dep_ipsSerializer(serializers.ModelSerializer):
 
     def to_representation(self, obj):
         user = Dep_ips.objects.get(id=obj.id)
-        prueba = Pruebas.objects.get(dep_ips=obj.id)
+        #prueba = Pruebas.objects.get(dep_ips=obj.id)
         ips = Ips.objects.get(id=user.ips_id)
         departamento = Departamento.objects.get(id=user.departamento_id)
 
@@ -34,14 +34,14 @@ class Dep_ipsSerializer(serializers.ModelSerializer):
             "name"        : user.name,
             "departamento": departamento.name,
             "ips"         : ips.name,
-            "prueba" : {
-                "id"                 : prueba.id,
-                "testDate"           : prueba.testDate,
-                "positiveTests"      : prueba.positiveTests,
-                "negativeTests"      : prueba.negativeTests,
-                "indeterminateTests" : prueba.indeterminateTests,
-                "totalTests"         : prueba.totalTests
-            }
+            # "prueba" : {
+            #     "id"                 : prueba.id,
+            #     "testDate"           : prueba.testDate,
+            #     "positiveTests"      : prueba.positiveTests,
+            #     "negativeTests"      : prueba.negativeTests,
+            #     "indeterminateTests" : prueba.indeterminateTests,
+            #     "totalTests"         : prueba.totalTests
+            # }
         }
 
 

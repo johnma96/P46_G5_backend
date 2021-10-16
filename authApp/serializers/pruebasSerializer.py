@@ -6,3 +6,4 @@ class PruebasSerializer(serializers.ModelSerializer):
         model  = Pruebas
         fields = ['testDate', 'positiveTests', 'negativeTests','indeterminateTests','totalTests']
 
+

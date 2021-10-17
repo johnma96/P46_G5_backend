@@ -5,7 +5,7 @@ from rest_framework                import serializers
 class PruebasSerializer(serializers.ModelSerializer):
     class Meta:
         model  = Pruebas
-        fields = ['dep_ips', 'testDate', 'positiveTests', 'negativeTests','indeterminateTests','totalTests']
+        fields = ['testDate', 'positiveTests', 'negativeTests','indeterminateTests','totalTests', 'dep_ips']#'dep_ips', 
 
     def create(self, validated_data):
         pruebasInstance = Pruebas.objects.create(**validated_data)

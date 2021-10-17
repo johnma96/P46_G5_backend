@@ -12,7 +12,7 @@ class Dep_ipsSerializer(serializers.ModelSerializer):
     prueba = PruebasSerializer()
     class Meta:
         model  = Dep_ips
-        fields = ['id', 'ips', 'departamento', 'name', 'username', 'password', 'prueba', 'ips', 'departamento']
+        fields = ['id', 'ips', 'departamento', 'name', 'username', 'password', 'prueba']
 
     def create(self, validated_data):
         pruebaData = validated_data.pop('prueba')

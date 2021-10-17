@@ -5,8 +5,8 @@ Test https://orange-crater-532875.postman.co/workspace/32ce41ea-5eb7-4a87-8c96-f
 
 Para que funcione primero tiene que agregar al menos 1 ips y 1 departamento a las tablas usando
 sql:
-INSERT INTO "authApp_departamento"(name) VALUES ('Cundinamarca');
-INSERT INTO "authApp_ips"(name) VALUES ('Salud total');
+- INSERT INTO "authApp_departamento"(name) VALUES ('Cundinamarca');
+- INSERT INTO "authApp_ips"(name) VALUES ('Salud total');
 
 Luego debe ir al archivo mover algunos archivos para insertar el primer dep_ips
 1. Ir a pruebaSerializer.py y quitar 'dep_ips' de la lista llamada fields

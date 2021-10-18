@@ -36,9 +36,9 @@ class DepartamentoListView(generics.ListAPIView):
         tokenBackend = TokenBackend(algorithm=settings.SIMPLE_JWT['ALGORITHM'])
         valid_data   = tokenBackend.decode(token,verify=False)
         
-        if valid_data['user_id'] != self.kwargs['user']:
-            stringResponse = {'detail':'Unauthorized Request'}
-            return Response(stringResponse, status=status.HTTP_401_UNAUTHORIZED)
+        # if valid_data['user_id'] != self.kwargs['user']:
+        #     stringResponse = {'detail':'Unauthorized Request'}
+        #     return Response(stringResponse, status=status.HTTP_401_UNAUTHORIZED)
         
         queryset = Departamento.objects.all()
         return queryset

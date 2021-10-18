@@ -18,6 +18,10 @@ class Dep_ipsSerializer(serializers.ModelSerializer):
         pruebaData = validated_data.pop('prueba')
         pruebaData.pop("dep_ips")
         userInstance = Dep_ips.objects.create(**validated_data)
+
+        totalTests = pruebaData['positiveTests'] + pruebaData['negativeTests'] + pruebaData['indeterminateTests']
+        pruebaData['totalTests'] = totalTests
+
         
         Pruebas.objects.create(dep_ips = userInstance, **pruebaData)#
         return userInstance

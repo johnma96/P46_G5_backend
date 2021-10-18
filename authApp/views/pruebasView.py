@@ -6,8 +6,10 @@ from rest_framework_simplejwt.backends            import TokenBackend
 
 
 from authApp.models.pruebas                import Pruebas
+from authApp.models.ips                    import Ips
 from authApp.models.dep_ips                import Dep_ips
 from authApp.serializers.pruebasSerializer import PruebasSerializer
+from authApp.serializers.ipsSerializer     import IpsSerializer
 
 
 
@@ -60,11 +62,33 @@ class PruebasDepartamentoView(generics.ListAPIView):
         tokenBackend = TokenBackend(algorithm=settings.SIMPLE_JWT['ALGORITHM'])
         valid_data   = tokenBackend.decode(token,verify=False)
         
-        if valid_data['user_id'] != self.kwargs['user']:
-            stringResponse = {'detail':'Unauthorized Request'}
-            return Response(stringResponse, status=status.HTTP_401_UNAUTHORIZED)
+        # if valid_data['user_id'] != self.kwargs['user']:
+        #     stringResponse = {'detail':'Unauthorized Request'}
+        #     return Response(stringResponse, status=status.HTTP_401_UNAUTHORIZED)
 
-        queryset = Pruebas.objects.select_related().filter(dep_ips__departamento__id = 1)
+        
+        #queryset = Pruebas.objects.select_related().filter(dep_ips__departamento__id = self.kwargs['user'])
+        queryset = Pruebas.objects.select_related('dep_ips__departamento').filter(dep_ips__departamento__name = self.kwargs['departamento'])
+        print('*'*100)
+        print(str(queryset.query))
+        print('*'*100)
+
+        return queryset
+
+class PruebasIpsView(generics.ListAPIView):
+    serializer_class = PruebasSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        token        = self.request.META.get('HTTP_AUTHORIZATION')[7:]
+        tokenBackend = TokenBackend(algorithm=settings.SIMPLE_JWT['ALGORITHM'])
+        valid_data   = tokenBackend.decode(token,verify=False)
+
+        # if valid_data['user_id'] != self.kwargs['user']:
+        #     stringResponse = {'detail':'Unauthorized Request'}
+        #     return Response(stringResponse, status=status.HTTP_401_UNAUTHORIZED)
+
+        queryset = Pruebas.objects.select_related('dep_ips__ips').filter(dep_ips__ips__name = self.kwargs['ips'])
         print('*'*100)
         print(str(queryset.query))
         print('*'*100)

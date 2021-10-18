@@ -12,7 +12,7 @@ urlpatterns = [
     path('prueba/create/',                  authAppViews.PruebasCreateView.as_view()),
     path('prueba/<int:user>/',              authAppViews.PruebasDep_ipsView.as_view()),
     path('prueba/departamento/<str:departamento>/', authAppViews.PruebasDepartamentoView.as_view()),
-    path('prueba/ips/<int:user>/',          authAppViews.PruebasIpsView.as_view()),
+    path('prueba/ips/<str:ips>/',          authAppViews.PruebasIpsView.as_view()),
     path('dep_ips/<int:pk>/',               authAppViews.Dep_ipsDetailView.as_view()), # check info for an specific dep_ips based on id(pk)
     path('login/',                          TokenObtainPairView.as_view()), # use credentials to return tokens
     path('refresh/',                        TokenRefreshView.as_view()), # generate new access token

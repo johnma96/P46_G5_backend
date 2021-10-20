@@ -78,8 +78,6 @@ class PruebasDepartamentoView(generics.ListAPIView):
         return queryset
 
 class PruebasIpsView(generics.ListAPIView):
-    print('here')
-    print('*'*100)
     serializer_class = PruebasSerializer
     permission_classes = (IsAuthenticated,)
 

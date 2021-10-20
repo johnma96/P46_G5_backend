@@ -71,8 +71,16 @@ class PruebasDep_ipsView(generics.ListAPIView):
             raise PermissionDenied()
             # stringResponse = {'detail':'Unauthorized Request'}
             # return Response(stringResponse, status=status.HTTP_401_UNAUTHORIZED)
-        
+                
         queryset = Pruebas.objects.filter(dep_ips_id=self.kwargs['user'])
+        
+        startDate = self.request.query_params.get('startDate')
+        endDate   = self.request.query_params.get('endDate')
+
+        if startDate is not(None) and endDate is not(None):
+            queryset = queryset.filter(testDate__range=[startDate, endDate])
+
+        
         return queryset
 
 class PruebasDepartamentoView(generics.ListAPIView):
@@ -96,6 +104,15 @@ class PruebasDepartamentoView(generics.ListAPIView):
         # print(str(queryset.query))
         # print('*'*100)
 
+        startDate = self.request.query_params.get('startDate')
+        endDate   = self.request.query_params.get('endDate')
+
+        if startDate is not(None) and endDate is not(None):
+            queryset = queryset.filter(testDate__range=[startDate, endDate])
+
+        
+        return queryset
+
         return queryset
 
 class PruebasIpsView(generics.ListAPIView):
@@ -117,6 +134,15 @@ class PruebasIpsView(generics.ListAPIView):
         # print(str(queryset.query))
         # print('*'*100)
 
+        startDate = self.request.query_params.get('startDate')
+        endDate   = self.request.query_params.get('endDate')
+
+        if startDate is not(None) and endDate is not(None):
+            queryset = queryset.filter(testDate__range=[startDate, endDate])
+
+        
+        return queryset
+
         return queryset
 
 class PruebaUpdateView(generics.UpdateAPIView):
@@ -129,8 +155,6 @@ class PruebaUpdateView(generics.UpdateAPIView):
         tokenBackend = TokenBackend(algorithm=settings.SIMPLE_JWT['ALGORITHM'])
         valid_data   = tokenBackend.decode(token,verify=False)
 
-        
-
         if (valid_data['user_id'] != self.kwargs['user']):
             stringResponse = {'detail':'Unauthorized Request'}
             return Response(stringResponse, status=status.HTTP_401_UNAUTHORIZED)
@@ -141,11 +165,9 @@ class PruebaUpdateView(generics.UpdateAPIView):
             stringResponse = {'detail':'Unauthorized Request. You cannot change a test that you did not create'}
             return Response(stringResponse, status=status.HTTP_401_UNAUTHORIZED)
 
-        
         if request.data['dep_ips'] != detailTest.dep_ips_id:
             stringResponse = {'detail':'Unauthorized Request. You cannot transfer a test that you created'}
             return Response(stringResponse, status=status.HTTP_401_UNAUTHORIZED)
-
 
         totalTests = request.data['positiveTests'] + request.data['negativeTests'] + request.data['indeterminateTests']
         request.data['totalTests'] = totalTests

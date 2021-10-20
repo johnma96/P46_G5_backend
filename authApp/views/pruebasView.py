@@ -65,8 +65,9 @@ class PruebasDepartamentoView(generics.ListAPIView):
         valid_data   = tokenBackend.decode(token,verify=False)
         
         # if valid_data['user_id'] != self.kwargs['user']:
-        #     stringResponse = {'detail':'Unauthorized Request'}
-        #     return Response(stringResponse, status=status.HTTP_401_UNAUTHORIZED)
+        #     raise PermissionDenied()
+            # stringResponse = {'detail':'Unauthorized Request'}
+            # return Response(stringResponse, status=status.HTTP_401_UNAUTHORIZED)
 
         
         #queryset = Pruebas.objects.select_related().filter(dep_ips__departamento__id = self.kwargs['user'])
@@ -87,8 +88,9 @@ class PruebasIpsView(generics.ListAPIView):
         valid_data   = tokenBackend.decode(token,verify=False)
 
         # if valid_data['user_id'] != self.kwargs['user']:
-        #     stringResponse = {'detail':'Unauthorized Request'}
-        #     return Response(stringResponse, status=status.HTTP_401_UNAUTHORIZED)
+        #     raise PermissionDenied()
+            # stringResponse = {'detail':'Unauthorized Request'}
+            # return Response(stringResponse, status=status.HTTP_401_UNAUTHORIZED)
 
         queryset = Pruebas.objects.select_related('dep_ips__ips').filter(dep_ips__ips__name = self.kwargs['ips'])
         # print('*'*100)

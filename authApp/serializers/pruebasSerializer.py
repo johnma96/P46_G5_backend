@@ -4,7 +4,12 @@ from authApp.models.ips            import Ips
 from authApp.models.departamento   import Departamento
 from rest_framework                import serializers
 
+from dateutil.tz import gettz
+
+import pytz
+
 class PruebasSerializer(serializers.ModelSerializer):
+
     class Meta:
         model  = Pruebas
         fields = ['testDate', 'positiveTests', 'negativeTests','indeterminateTests','totalTests', 'dep_ips']#'dep_ips', 
@@ -19,10 +24,13 @@ class PruebasSerializer(serializers.ModelSerializer):
         dep_ips = Dep_ips.objects.get(id=obj.dep_ips_id)
         ips = Ips.objects.get(id=dep_ips.ips_id)
         departamento = Departamento.objects.get(id=dep_ips.departamento_id)
+        zone = 'America/Bogota'
+        dtZone = prueba.testDate.astimezone(gettz(zone)).isoformat(sep='T')[:-6]
+
 
         return {
             'id'                 : prueba.id,
-            'testDate'           : prueba.testDate,
+            'testDate'           : dtZone,
             'positiveTests'      : prueba.positiveTests,
             'negativeTests'      : prueba.negativeTests,
             'indeterminateTests' : prueba.indeterminateTests,

@@ -38,6 +38,31 @@ class PruebasCreateView(generics.CreateAPIView):
 
         return Response("Prueba registrada", status=status.HTTP_201_CREATED)
 
+class PruebaDetailView(generics.RetrieveAPIView):
+    serializer_class   = PruebasSerializer
+    permission_classes = (IsAuthenticated,)
+    queryset = Pruebas.objects.all()
+
+    def get(self, request, *args, **kwargs):
+        token        = request.META.get('HTTP_AUTHORIZATION')[7:]
+        tokenBackend = TokenBackend(algorithm=settings.SIMPLE_JWT['ALGORITHM'])
+        valid_data   = tokenBackend.decode(token,verify=False)
+
+        if valid_data['user_id'] != self.kwargs['user']:
+            stringResponse = {'detail':'Unauthorized Request'}
+            return Response(stringResponse, status=status.HTTP_401_UNAUTHORIZED)
+
+        return super().get(request, *args, **kwargs)
+
+
+
+
+
+
+
+
+
+
 class PruebasDep_ipsView(generics.ListAPIView):
     serializer_class   = PruebasSerializer
     permission_classes = (IsAuthenticated,)
@@ -103,7 +128,6 @@ class PruebaUpdateView(generics.UpdateAPIView):
     serializer_class = PruebasSerializer
     permission_classes = (IsAuthenticated,)
     queryset = Pruebas.objects.all()
-    #print(queryset, 'here'*100)
 
     def update(self, request, *args, **kwargs):
         token        = request.META.get('HTTP_AUTHORIZATION')[7:]

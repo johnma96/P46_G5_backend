@@ -103,7 +103,7 @@ class PruebaUpdateView(generics.UpdateAPIView):
     serializer_class = PruebasSerializer
     permission_classes = (IsAuthenticated,)
     queryset = Pruebas.objects.all()
-    print(queryset, 'here'*100)
+    #print(queryset, 'here'*100)
 
     def update(self, request, *args, **kwargs):
         token        = request.META.get('HTTP_AUTHORIZATION')[7:]

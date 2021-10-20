@@ -13,3 +13,5 @@ Luego debe ir al archivo mover algunos archivos para insertar el primer dep_ips
 2. Comente la líne pruebaData.pop("dep_ips") en el archivo dep_ipsSerializer.py
 
 Luego de crear su primer dep_ips deshaga los pasos anteriores
+
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/afca26af1762eb7b3f07?action=collection%2Fimport)

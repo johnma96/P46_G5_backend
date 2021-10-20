@@ -13,7 +13,6 @@ from authApp.serializers.pruebasSerializer import PruebasSerializer
 from authApp.serializers.ipsSerializer     import IpsSerializer
 
 
-
 class PruebasCreateView(generics.CreateAPIView):
     serializer_class   = PruebasSerializer
     permission_classes = (IsAuthenticated,)
@@ -52,19 +51,15 @@ class PruebaDetailView(generics.RetrieveAPIView):
             stringResponse = {'detail':'Unauthorized Request'}
             return Response(stringResponse, status=status.HTTP_401_UNAUTHORIZED)
 
-        return super().get(request, *args, **kwargs)
+        data_return = super().get(request, *args, **kwargs)
+        if data_return.data['dep_ips']['id'] !=  self.kwargs['user']:
+            stringResponse = {'detail':"Unauthorized Request. You did't enter this test"}
+            return Response(stringResponse, status=status.HTTP_401_UNAUTHORIZED)
 
-
-
-
-
-
-
-
-
+        return data_return
 
 class PruebasDep_ipsView(generics.ListAPIView):
-    serializer_class   = PruebasSerializer
+    serializer_class   = PruebasSerializer  
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
@@ -134,9 +129,23 @@ class PruebaUpdateView(generics.UpdateAPIView):
         tokenBackend = TokenBackend(algorithm=settings.SIMPLE_JWT['ALGORITHM'])
         valid_data   = tokenBackend.decode(token,verify=False)
 
-        if valid_data['user_id'] != self.kwargs['user']:# or request.data['dep_ips'] != valid_data['user_id']:
+        
+
+        if (valid_data['user_id'] != self.kwargs['user']):
             stringResponse = {'detail':'Unauthorized Request'}
             return Response(stringResponse, status=status.HTTP_401_UNAUTHORIZED)
+
+        detailTest = Pruebas.objects.get(id = self.kwargs['pk'])
+
+        if (self.kwargs['user'] != detailTest.dep_ips_id):
+            stringResponse = {'detail':'Unauthorized Request. You cannot change a test that you did not create'}
+            return Response(stringResponse, status=status.HTTP_401_UNAUTHORIZED)
+
+        
+        if request.data['dep_ips'] != detailTest.dep_ips_id:
+            stringResponse = {'detail':'Unauthorized Request. You cannot transfer a test that you created'}
+            return Response(stringResponse, status=status.HTTP_401_UNAUTHORIZED)
+
 
         totalTests = request.data['positiveTests'] + request.data['negativeTests'] + request.data['indeterminateTests']
         request.data['totalTests'] = totalTests
@@ -156,5 +165,12 @@ class PruebaDeleteView(generics.DestroyAPIView):
         if valid_data['user_id'] != self.kwargs['user']:
             stringResponse = {'detail':'Unauthorized Request'}
             return Response(stringResponse, status=status.HTTP_401_UNAUTHORIZED)
+
+        detailTest = Pruebas.objects.get(id = self.kwargs['pk'])
+
+        if (self.kwargs['user'] != detailTest.dep_ips_id):
+            stringResponse = {'detail':'Unauthorized Request. You cannot delete a test that you did not create'}
+            return Response(stringResponse, status=status.HTTP_401_UNAUTHORIZED)
+
 
         return super().destroy(request, *args, **kwargs)

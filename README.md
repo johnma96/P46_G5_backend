@@ -34,37 +34,36 @@ Project for the backend of the programming component of cycle 3 of the MisionTic
 ### Despliegue de la base de datos en remoto
 2. Crear una aplicación para la base de datos en heroku
 3. Configurar el proyecto para que trabaje con la base de datos de heroku
-    - Estando con su aplicación en local genere una copia del archivo **settings.py**, que se encuentra en **authProject**, llamda **settings_prod.py**
+    - Estando con su aplicación en local genere una copia del archivo **settings.py**, que se encuentra en **authProject**, llamada **settings_prod.py**
     - En settings_prod.py cambie el valor de DEBUG a False y en ALLOWED_HOST coloque en la lista 'localhost'
     - Conecte la base de datos que creó a través de una app como dbeaver empleando las credenciales de heroku
     - Use las mismas credenciales para cambiar los valores de DATABASES en **settings_prod.py**
     - Modifique el archivo **manage.py**: En la línea **os.environ.setdefault...** ingrese al final **settings_prod**
     - Modifique el archivo **wsgi.py**: En la línea **os.environ.setdefault...** ingrese al final **settings_prod** (Nota: este cambio no afecta la instalación en local)
-3. Generar las migraciones de la aplicación 
+4. Generar las migraciones de la aplicación 
     - python manage.py makemigrations authApp
-4. Ejecutar las migraciones para la creación del MER en la base de datos de heroku
+5. Ejecutar las migraciones para la creación del MER en la base de datos de heroku
     - python manage.py migrate
 Nota: Si verifica dbeaver debe estar conectado a la base de datos remota y debería tener las tablas de la aplicación creadas
 
 ### Despliegue del backend en remoto por primera vez
-5. Instalar heroku en su máquina local
+6. Instalar heroku en su máquina local
     - **sudo snap install --classic heroku** (linux). Otro SO: https://devcenter.heroku.com/articles/heroku-cli
-6. Crear una aplicación para el backend
-7. Ir a requirements.txt de la aplicación y agregar:
+7. Crear una aplicación en heroku para el backend
+8. Ir a requirements.txt de la aplicación (authApp) y agregar:
     - gunicorn
     - django_heroku
-8. Agregar django_heroku en **settings_prod.py**
+9. Agregar django_heroku en **settings_prod.py**
     - **import django_heroku** para importar la libreriía
     - Al final del archivo colocar: **django_heroku.settings(locals())
-
-9. En la raíz del backend crear un archivo con nombre **Procfile** y agregarle la línea:
+10. En la raíz del backend crear un archivo con nombre **Procfile** y agregarle la línea:
     - web: gunicorn authApp.wsgi
 11. Desde terminal estando en la raíz del backend
     - **heroku login** este comando entrega un link que debe usarse en el navegador en el cual esté logueado a heroku para logearse. Luego de logearse, en la terminal debe obtener un msj tipo **...Logged in as pepito@gmail.com** 
 12. Conectar la aplicación con heroku
     - heroku git:remote -a <nombre_aplicación_backend>
 13. Subir los cambios de la rama de producción en la cual ha estado trabajando o la rama main(La que contenga los cambios anteriores) y subirlo a su repositorio de github
-14. En terminal crear una rama master, moverse a ella y copiar el código actualizado de la rama que contenga los cambios anterior
+14. En terminal crear una rama master, moverse a ella y copiar el código actualizado de la rama que contenga los cambios de los pasos anteriores
     - git checkout -b master
     - git pull origin main
 15. Verifique que todo en la rama master este con commit
@@ -83,7 +82,7 @@ Nota: Si verifica dbeaver debe estar conectado a la base de datos remota y deber
     - ALLOWED_HOSTS = ['localhost', 'https://p46g5be.herokuapp.com/']
  
 22. Realize un commit del cambio y use el comando del paso 16 para volver a enviar los cambios a heroku
-23. Para otras aplicaciones desarrolladas sus casos de prueba ya deben estar corriendo. En el caso de esta aplicación debe:
+23. Para otras aplicaciones desarrolladas sus casos de prueba ya deben estar corriendo. En el caso de esta aplicación ***authApp*** debe:
 
         1) Conectarse a la base de datos remota desde terminal
             - psql -U USER_NAME_DB -h HOST -p 5432 NAME_DB  (Use las credenciales de heroku para conectarse)
@@ -96,9 +95,14 @@ Nota: Si verifica dbeaver debe estar conectado a la base de datos remota y deber
         7) Enviar los cambios a heroku. Paso 16 de despliegue de la app usando heroku
 
 ### Despliegue del backend en remoto luego de haber desplegado la app por primera vez
-1. Luego de hacer cambios a su aplicación asegúrese de que dichos cambios estén en la rama master
-2. Desde master ejecute:
+1. Instalar heroku(Paso 5 del despliegue por primera vez)
+2. Conectar la aplicación ***authApp*** con remoto(Paso 12 del despliegue por primera vez)
+3. Realize los cambios de la aplicación ***authApp***
+4. Luego de hacer cambios en ***authApp*** asegúrese de que dichos cambios estén en la rama **master**
+5. Desde master ejecute:
     - git push heroku master
+
+Nota: Si por alguna razón tiene que eliminar las tablas de la base de datos en heroku, ejecute los pasos 4,5 y 23 del despliegue por primera vez
 
 
 - [![Run in Postman](https://run.pstmn.io/button.svg)](https://god.postman.co/run-collection/1437556d6999f74cd7c1?action=collection%2Fimport) **Casos de prueba en local**

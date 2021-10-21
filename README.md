@@ -28,4 +28,4 @@ Project for the backend of the programming component of cycle 3 of the MisionTic
 9. Luego de crear su primer dep_ips deshaga las acciones del paso 8
 
 
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/afca26af1762eb7b3f07?action=collection%2Fimport)
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://god.postman.co/run-collection/afca26af1762eb7b3f07?action=collection%2Fimport)

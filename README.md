@@ -15,12 +15,16 @@ Project for the backend of the programming component of cycle 3 of the MisionTic
 6. Agregar al menos 1 ips y 1 departamento a las tablas usando sql:
     - INSERT INTO "authApp_departamento"(name) VALUES ('Cundinamarca');
     - INSERT INTO "authApp_ips"(name) VALUES ('Salud total');
-7. Insertar su primera dep_ips
+7. Iniciar la aplicación desde la carpeta raíz
+    - python manage.py runserver
+8. Insertar su primera dep_ips
+
       Debe modificar archivos para insertar el primer dep_ips
       
       1) Ir a **pruebaSerializer.py** y quitar 'dep_ips' de la lista llamada fields
       2) Comente la líne **pruebaData.pop("dep_ips")** en el archivo **dep_ipsSerializer.py**
-8. Cree el primer dep_ips usando el caso de prueba CreateDep_ipsCorrect empleando postman(Los casos de prueba se agregan al final de este documento)
+      3) Cree el primer dep_ips usando el caso de prueba CreateDep_ipsCorrect empleando postman(Los casos de prueba se agregan al final de este documento)
+   
 9. Luego de crear su primer dep_ips deshaga las acciones del paso 7
 
 

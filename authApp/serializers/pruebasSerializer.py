@@ -6,8 +6,6 @@ from rest_framework                import serializers
 
 from dateutil.tz import gettz
 
-import pytz
-
 class PruebasSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -20,12 +18,12 @@ class PruebasSerializer(serializers.ModelSerializer):
 
     def to_representation(self, obj):
 
-        prueba = Pruebas.objects.get(id=obj.id)
-        dep_ips = Dep_ips.objects.get(id=obj.dep_ips_id)
-        ips = Ips.objects.get(id=dep_ips.ips_id)
+        prueba       = Pruebas.objects.get(id=obj.id)
+        dep_ips      = Dep_ips.objects.get(id=obj.dep_ips_id)
+        ips          = Ips.objects.get(id=dep_ips.ips_id)
         departamento = Departamento.objects.get(id=dep_ips.departamento_id)
-        zone = 'America/Bogota'
-        dtZone = prueba.testDate.astimezone(gettz(zone)).isoformat(sep=' ')[:-6]
+        zone         = 'America/Bogota'
+        dtZone       = prueba.testDate.astimezone(gettz(zone)).isoformat(sep=' ')[:-6]
 
         return {
             'id'                 : prueba.id,

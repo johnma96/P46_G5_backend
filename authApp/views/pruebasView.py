@@ -4,13 +4,10 @@ from rest_framework                               import generics, status
 from rest_framework.permissions                   import IsAuthenticated
 from rest_framework.response                      import Response
 from rest_framework_simplejwt.backends            import TokenBackend
-
+from datetime import date, datetime
 
 from authApp.models.pruebas                import Pruebas
-from authApp.models.ips                    import Ips
-from authApp.models.dep_ips                import Dep_ips
 from authApp.serializers.pruebasSerializer import PruebasSerializer
-from authApp.serializers.ipsSerializer     import IpsSerializer
 
 
 class PruebasCreateView(generics.CreateAPIView):
@@ -37,10 +34,11 @@ class PruebasCreateView(generics.CreateAPIView):
 
         return Response("Prueba registrada", status=status.HTTP_201_CREATED)
 
+
 class PruebaDetailView(generics.RetrieveAPIView):
     serializer_class   = PruebasSerializer
     permission_classes = (IsAuthenticated,)
-    queryset = Pruebas.objects.all()
+    queryset           = Pruebas.objects.all()
 
     def get(self, request, *args, **kwargs):
         token        = request.META.get('HTTP_AUTHORIZATION')[7:]
@@ -77,14 +75,18 @@ class PruebasDep_ipsView(generics.ListAPIView):
         startDate = self.request.query_params.get('startDate')
         endDate   = self.request.query_params.get('endDate')
 
+        if startDate is not(None) and endDate is None:
+            format = "%Y-%m-%d"
+            dt_startDate = datetime.strptime(startDate, format)
+            queryset = queryset.filter(testDate__date = dt_startDate.date())
+
         if startDate is not(None) and endDate is not(None):
             queryset = queryset.filter(testDate__range=[startDate, endDate])
-
-        
+                    
         return queryset
 
 class PruebasDepartamentoView(generics.ListAPIView):
-    serializer_class = PruebasSerializer
+    serializer_class   = PruebasSerializer
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
@@ -92,13 +94,11 @@ class PruebasDepartamentoView(generics.ListAPIView):
         tokenBackend = TokenBackend(algorithm=settings.SIMPLE_JWT['ALGORITHM'])
         valid_data   = tokenBackend.decode(token,verify=False)
         
-        # if valid_data['user_id'] != self.kwargs['user']:
-        #     raise PermissionDenied()
+        if valid_data['user_id'] != self.kwargs['user']:
+            raise PermissionDenied()
             # stringResponse = {'detail':'Unauthorized Request'}
             # return Response(stringResponse, status=status.HTTP_401_UNAUTHORIZED)
-
-        
-        #queryset = Pruebas.objects.select_related().filter(dep_ips__departamento__id = self.kwargs['user'])
+ 
         queryset = Pruebas.objects.select_related('dep_ips__departamento').filter(dep_ips__departamento__name = self.kwargs['departamento'])
         # print('*'*100)
         # print(str(queryset.query))
@@ -107,16 +107,18 @@ class PruebasDepartamentoView(generics.ListAPIView):
         startDate = self.request.query_params.get('startDate')
         endDate   = self.request.query_params.get('endDate')
 
+        if startDate is not(None) and endDate is None:
+            format = "%Y-%m-%d"
+            dt_startDate = datetime.strptime(startDate, format)
+            queryset = queryset.filter(testDate__date = dt_startDate.date())
+
         if startDate is not(None) and endDate is not(None):
             queryset = queryset.filter(testDate__range=[startDate, endDate])
-
-        
-        return queryset
-
+            
         return queryset
 
 class PruebasIpsView(generics.ListAPIView):
-    serializer_class = PruebasSerializer
+    serializer_class   = PruebasSerializer
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
@@ -124,8 +126,8 @@ class PruebasIpsView(generics.ListAPIView):
         tokenBackend = TokenBackend(algorithm=settings.SIMPLE_JWT['ALGORITHM'])
         valid_data   = tokenBackend.decode(token,verify=False)
 
-        # if valid_data['user_id'] != self.kwargs['user']:
-        #     raise PermissionDenied()
+        if valid_data['user_id'] != self.kwargs['user']:
+            raise PermissionDenied()
             # stringResponse = {'detail':'Unauthorized Request'}
             # return Response(stringResponse, status=status.HTTP_401_UNAUTHORIZED)
 
@@ -137,18 +139,21 @@ class PruebasIpsView(generics.ListAPIView):
         startDate = self.request.query_params.get('startDate')
         endDate   = self.request.query_params.get('endDate')
 
+        if startDate is not(None) and endDate is None:
+            format       = "%Y-%m-%d"
+            dt_startDate = datetime.strptime(startDate, format)
+            queryset     = queryset.filter(testDate__date = dt_startDate.date())
+
         if startDate is not(None) and endDate is not(None):
             queryset = queryset.filter(testDate__range=[startDate, endDate])
 
-        
         return queryset
 
-        return queryset
 
 class PruebaUpdateView(generics.UpdateAPIView):
-    serializer_class = PruebasSerializer
+    serializer_class   = PruebasSerializer
     permission_classes = (IsAuthenticated,)
-    queryset = Pruebas.objects.all()
+    queryset           = Pruebas.objects.all()
 
     def update(self, request, *args, **kwargs):
         token        = request.META.get('HTTP_AUTHORIZATION')[7:]
@@ -169,15 +174,19 @@ class PruebaUpdateView(generics.UpdateAPIView):
             stringResponse = {'detail':'Unauthorized Request. You cannot transfer a test that you created'}
             return Response(stringResponse, status=status.HTTP_401_UNAUTHORIZED)
 
+        if not('testDate' in request.data):
+            request.data['testDate'] = datetime.now()
+
         totalTests = request.data['positiveTests'] + request.data['negativeTests'] + request.data['indeterminateTests']
         request.data['totalTests'] = totalTests
 
         return super().update(request, *args, **kwargs)
 
+
 class PruebaDeleteView(generics.DestroyAPIView):
-    serializer_class = PruebasSerializer
+    serializer_class   = PruebasSerializer
     permission_classes = (IsAuthenticated,)
-    queryset = Pruebas.objects.all()
+    queryset           = Pruebas.objects.all()
 
     def delete(self, request, *args, **kwargs):
         token        = request.META.get('HTTP_AUTHORIZATION')[7:]
@@ -193,6 +202,5 @@ class PruebaDeleteView(generics.DestroyAPIView):
         if (self.kwargs['user'] != detailTest.dep_ips_id):
             stringResponse = {'detail':'Unauthorized Request. You cannot delete a test that you did not create'}
             return Response(stringResponse, status=status.HTTP_401_UNAUTHORIZED)
-
 
         return super().destroy(request, *args, **kwargs)

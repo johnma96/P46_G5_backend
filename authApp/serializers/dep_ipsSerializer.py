@@ -8,6 +8,7 @@ from authApp.serializers.pruebasSerializer      import PruebasSerializer
 
 from rest_framework                             import serializers
 
+
 class Dep_ipsSerializer(serializers.ModelSerializer):
     prueba = PruebasSerializer()
     class Meta:
@@ -22,14 +23,13 @@ class Dep_ipsSerializer(serializers.ModelSerializer):
         totalTests = pruebaData['positiveTests'] + pruebaData['negativeTests'] + pruebaData['indeterminateTests']
         pruebaData['totalTests'] = totalTests
 
-        
         Pruebas.objects.create(dep_ips = userInstance, **pruebaData)#
         return userInstance
 
     def to_representation(self, obj):
-        user = Dep_ips.objects.get(id=obj.id)
-        #prueba = Pruebas.objects.get(dep_ips=obj.id)
-        ips = Ips.objects.get(id=user.ips_id)
+        user         = Dep_ips.objects.get(id=obj.id)
+        #prueba      = Pruebas.objects.get(dep_ips=obj.id)
+        ips          = Ips.objects.get(id=user.ips_id)
         departamento = Departamento.objects.get(id=user.departamento_id)
 
         return {
@@ -47,6 +47,3 @@ class Dep_ipsSerializer(serializers.ModelSerializer):
             #     "totalTests"         : prueba.totalTests
             # }
         }
-
-
- 

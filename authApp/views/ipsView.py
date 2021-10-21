@@ -32,9 +32,9 @@ class IpsListView(generics.ListAPIView):
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
-        token        = self.request.META.get('HTTP_AUTHORIZATION')[7:]
-        tokenBackend = TokenBackend(algorithm=settings.SIMPLE_JWT['ALGORITHM'])
-        valid_data   = tokenBackend.decode(token,verify=False)
+        # token        = self.request.META.get('HTTP_AUTHORIZATION')[7:]
+        # tokenBackend = TokenBackend(algorithm=settings.SIMPLE_JWT['ALGORITHM'])
+        # valid_data   = tokenBackend.decode(token,verify=False)
         
         # if valid_data['user_id'] != self.kwargs['user']:
         #     stringResponse = {'detail':'Unauthorized Request'}

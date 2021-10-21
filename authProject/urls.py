@@ -15,8 +15,8 @@ urlpatterns = [
     path('prueba/create/',                          authAppViews.PruebasCreateView.as_view()), # create a new test for a specific dep_ips
     path('prueba/<int:user>/',                      authAppViews.PruebasDep_ipsView.as_view()), # Filter test by dep_ips
     path('prueba/<int:user>/<int:pk>/',             authAppViews.PruebaDetailView.as_view()), # check info for an specific test
-    path('prueba/ips/<str:ips>/',                   authAppViews.PruebasIpsView.as_view()),    #filter tests by IPS
-    path('prueba/departamento/<str:departamento>/', authAppViews.PruebasDepartamentoView.as_view()), #filter tests by departamento
+    path('prueba/ips/<int:user>/<str:ips>/',                   authAppViews.PruebasIpsView.as_view()),    #filter tests by IPS
+    path('prueba/departamento/<int:user>/<str:departamento>/', authAppViews.PruebasDepartamentoView.as_view()), #filter tests by departamento
     path('prueba/update/<int:user>/<int:pk>/',      authAppViews.PruebaUpdateView.as_view()), # update a specific test
     path('prueba/delete/<int:user>/<int:pk>/',      authAppViews.PruebaDeleteView.as_view()), # delete a specific test
     path('login/',                                  TokenObtainPairView.as_view()), # use credentials to return tokens

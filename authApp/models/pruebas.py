@@ -1,8 +1,7 @@
-import django
-
-
 from .dep_ips              import Dep_ips
 from django.db             import models
+
+import django
 
 
 class Pruebas(models.Model):

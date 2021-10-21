@@ -5,3 +5,4 @@ djangorestframework-simplejwt==4.8.0
 psycopg2-binary==2.9.1
 gunicorn
 django-heroku
+python-dateutil

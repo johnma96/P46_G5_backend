@@ -5,6 +5,10 @@ from authApp.serializers.dep_ipsSerializer    import Dep_ipsSerializer
 
 class Dep_ipsCreateView(views.APIView):
     def post(self, request, *args, **kwargs):
+        #Agrego esta línea al request para engañar al código y simular que en el request
+        #viene un dep_ips, pero luego, ese argumento se corta en el dep_ips serializer
+        request.data['prueba']['dep_ips'] = 1 
+
         serializer = Dep_ipsSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()

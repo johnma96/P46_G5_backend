@@ -1,9 +1,10 @@
 from rest_framework                        import serializers
 from authApp.models.ips                    import Ips
 
+
 class IpsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Ips
+        model  = Ips
         fields = ['id', 'name']
 
     def create(self, validated_data):

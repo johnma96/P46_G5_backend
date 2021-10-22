@@ -10,7 +10,7 @@ class PruebasSerializer(serializers.ModelSerializer):
 
     class Meta:
         model  = Pruebas
-        fields = ['testDate', 'positiveTests', 'negativeTests','indeterminateTests','totalTests','dep_ips']#'dep_ips', 
+        fields = ['testDate', 'positiveTests', 'negativeTests','indeterminateTests','totalTests']#'dep_ips', 
 
     def create(self, validated_data):
         pruebasInstance = Pruebas.objects.create(**validated_data)

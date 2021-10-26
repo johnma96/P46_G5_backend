@@ -23,7 +23,7 @@ class PruebasSerializer(serializers.ModelSerializer):
         ips          = Ips.objects.get(id=dep_ips.ips_id)
         departamento = Departamento.objects.get(id=dep_ips.departamento_id)
         zone         = 'America/Bogota'
-        dtZone       = prueba.testDate.astimezone(gettz(zone)).isoformat(sep=' ')[:-6]
+        dtZone       = prueba.testDate.astimezone(gettz(zone)).isoformat(sep=' ')[:19]
 
         return {
             'id'                 : prueba.id,

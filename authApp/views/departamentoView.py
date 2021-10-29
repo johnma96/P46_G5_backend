@@ -30,7 +30,8 @@ class DepartamentoCreateView(generics.RetrieveAPIView):
 
 class DepartamentoListView(generics.ListAPIView):
     serializer_class   = DepartamentoSerializer
-    permission_classes = (IsAuthenticated,)
+    # permission_classes = (IsAuthenticated,)
+
 
     def get_queryset(self):
         # token        = self.request.META.get('HTTP_AUTHORIZATION')[7:]

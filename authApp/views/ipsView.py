@@ -29,7 +29,7 @@ class IpsCreateView(views.APIView):
 
 class IpsListView(generics.ListAPIView):
     serializer_class   = IpsSerializer
-    permission_classes = (IsAuthenticated,)
+    # permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
         # token        = self.request.META.get('HTTP_AUTHORIZATION')[7:]
